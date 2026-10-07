@@ -5,6 +5,7 @@
     ]).
 
 :- use_module(process_tree).
+:- use_module(library(filesex), [make_directory_path/1]).
 
 build_debug_report(
     Specification,
@@ -39,6 +40,8 @@ build_debug_report(
 
 write_debug_report_file(OutputFile, Report) :-
     report_text(Report, Text),
+    file_directory_name(OutputFile, Directory),
+    make_directory_path(Directory),
     setup_call_cleanup(
         open(OutputFile, write, Stream, [encoding(utf8)]),
         ( write(Stream, Text),
