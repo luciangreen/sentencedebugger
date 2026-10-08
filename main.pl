@@ -59,7 +59,11 @@ debug_pipeline(Label, Operations, Input, ExpectedOutput, Options, Report) :-
     value_provenance(ActualTrace, Provenance),
     classify_bugs(Comparisons, Dependencies, BugClasses),
     generate_repairs(FirstDivergence, ActualTrace, ExpectedTrace, Repairs0),
-    verify_repairs(Repairs0, Options, Repairs),
+    verify_repairs(
+        Repairs0,
+        [verification_context(Stages, Input, ExpectedOutput)|Options],
+        Repairs
+    ),
     minimal_counterexample(Input, Operations, ExpectedOutput, MinimalCounterexample),
     build_debug_report(
         Label,
